@@ -1,5 +1,12 @@
 import Head from 'next/head'
-import { Container, Heading, Center, Button, HStack, VStack } from '@chakra-ui/core'
+import {
+  Container,
+  Heading,
+  Center,
+  Button,
+  HStack,
+  VStack,
+} from '@chakra-ui/core'
 import { useEffect, useContext } from 'react'
 import { GlobalContext } from '../context/GlobalState'
 import SelectTime from '../components/SelectTime'
@@ -15,14 +22,20 @@ const format = (time: number): string => {
   return `${concatZero(min)} : ${concatZero(sec)}`
 }
 
-const formatSession = (time: number): string => {
+export const formatSession = (time: number): string => {
   const min = Math.floor((time / 60) % 60)
   return `${concatZero(min)}`
 }
 
 const Home = () => {
   const { state, dispatch } = useContext(GlobalContext)
-  // Counter is the amount of seconds left
+
+  // Request notification permission to alert about session
+  useEffect(() => {
+    if (Notification.permission !== 'denied') {
+      Notification.requestPermission()
+    }
+  }, [])
 
   useEffect(() => {
     if (state.counter.state) {
@@ -46,15 +59,15 @@ const Home = () => {
         <Center
           h="200px"
           borderRadius={6}
-          bgColor={state.counter.type === "SESSION" ? 'red.200' : 'green.200'}
+          bgColor={state.counter.type === 'SESSION' ? 'red.200' : 'green.200'}
         >
           <VStack>
-          <Heading as="h1" fontSize="2rem">
-            {state.counter.type}
-          </Heading>
-          <Heading as="h1" fontSize="5.5rem">
-            {format(state.counter.value)}
-          </Heading>
+            <Heading as="h1" fontSize="2rem">
+              {state.counter.type}
+            </Heading>
+            <Heading as="h1" fontSize="5.5rem">
+              {format(state.counter.value)}
+            </Heading>
           </VStack>
         </Center>
         <HStack mt={4} gridColumnGap={4}>
@@ -73,7 +86,7 @@ const Home = () => {
               dispatch({ type: 'RESET' })
             }}
           >
-            {state.counter.state ? "Reset" : "Set"}
+            {state.counter.state ? 'Reset' : 'Set'}
           </Button>
           <Button
             isDisabled={!state.counter.state}
@@ -89,7 +102,9 @@ const Home = () => {
           <SelectTime title="Session">
             {formatSession(state.sessionTime)}
           </SelectTime>
-          <SelectTime title="Break">{formatSession(state.breakTime)}</SelectTime>
+          <SelectTime title="Break">
+            {formatSession(state.breakTime)}
+          </SelectTime>
         </Center>
       </Container>
     </>
