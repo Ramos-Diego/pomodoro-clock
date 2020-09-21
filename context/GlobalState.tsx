@@ -3,10 +3,13 @@ import AppReducer from './AppReducer'
 
 const initialState: State = {
   // This minutes field is for the user to set up custom timer
-  session: 25 * 60,
-  break: 5 * 60,
-  counting: false,
-  counter: 3
+  sessionTime: 25 * 60,
+  breakTime: 5 * 60,
+  counter: {
+    state: false,
+    type: 'SESSION',
+    value: 3
+  }
 }
 
 // The global context becomes a single source of truth

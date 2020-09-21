@@ -1,4 +1,4 @@
-import { Box, Heading, Flex, Center, VStack, Text } from '@chakra-ui/core'
+import { Box, Heading, Flex, VStack, Text } from '@chakra-ui/core'
 import { FaArrowAltCircleUp, FaArrowAltCircleDown } from 'react-icons/fa'
 import { GlobalContext } from '../context/GlobalState'
 import { useContext } from 'react'
@@ -7,11 +7,11 @@ const SelectTime = ({ children, title }: SelectTimeProps) => {
   const { dispatch } = useContext(GlobalContext)
 
   return (
-    <Box>
+    <Box userSelect="none">
       <Heading as="h3" size="lg" textAlign="center" mb={2}>
         {title}
       </Heading>
-      <Flex h="100px" borderRadius={6} bgColor="red.300">
+      <Flex h="100px" borderRadius={6} bgColor={title === "Session" ? "red.200" : "green.200"}>
         <VStack justifyContent="center" mx={6}>
           <Heading as="h2" fontSize="3rem">
             {children}

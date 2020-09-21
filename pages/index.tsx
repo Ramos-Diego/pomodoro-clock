@@ -1,6 +1,6 @@
 import Head from 'next/head'
-import { Container, Heading, Center, Button, HStack } from '@chakra-ui/core'
-import { useEffect, useState, useContext } from 'react'
+import { Container, Heading, Center, Button, HStack, VStack } from '@chakra-ui/core'
+import { useEffect, useContext } from 'react'
 import { GlobalContext } from '../context/GlobalState'
 import SelectTime from '../components/SelectTime'
 
@@ -25,7 +25,7 @@ const Home = () => {
   // Counter is the amount of seconds left
 
   useEffect(() => {
-    if (state.counting) {
+    if (state.counter.state) {
       const timeoutId = setInterval(
         () => dispatch({ type: 'COUNT_DOWN' }),
         1000
@@ -33,7 +33,7 @@ const Home = () => {
 
       return () => clearInterval(timeoutId)
     }
-  }, [state.counter, state.counting])
+  }, [state.counter.state])
 
   return (
     <>
@@ -46,15 +46,20 @@ const Home = () => {
         <Center
           h="200px"
           borderRadius={6}
-          bgColor={state.counting ? 'purple.300' : 'green.300'}
+          bgColor={state.counter.type === "SESSION" ? 'red.200' : 'green.200'}
         >
-          <Heading as="h1" fontSize="5.5rem">
-            {format(state.counter)}
+          <VStack>
+          <Heading as="h1" fontSize="2rem">
+            {state.counter.type}
           </Heading>
+          <Heading as="h1" fontSize="5.5rem">
+            {format(state.counter.value)}
+          </Heading>
+          </VStack>
         </Center>
         <HStack mt={4} gridColumnGap={4}>
           <Button
-            isDisabled={state.counting}
+            isDisabled={state.counter.state}
             isFullWidth
             onClick={() => {
               dispatch({ type: 'START' })
@@ -68,10 +73,10 @@ const Home = () => {
               dispatch({ type: 'RESET' })
             }}
           >
-            {state.counting ? "Reset" : "Set"}
+            {state.counter.state ? "Reset" : "Set"}
           </Button>
           <Button
-            isDisabled={!state.counting}
+            isDisabled={!state.counter.state}
             isFullWidth
             onClick={() => {
               dispatch({ type: 'STOP' })
@@ -82,9 +87,9 @@ const Home = () => {
         </HStack>
         <Center mt={5} gridColumnGap={5}>
           <SelectTime title="Session">
-            {formatSession(state.session)}
+            {formatSession(state.sessionTime)}
           </SelectTime>
-          <SelectTime title="Break">{formatSession(state.break)}</SelectTime>
+          <SelectTime title="Break">{formatSession(state.breakTime)}</SelectTime>
         </Center>
       </Container>
     </>
