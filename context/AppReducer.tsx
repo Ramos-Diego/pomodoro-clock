@@ -1,3 +1,27 @@
+import { Howl } from 'howler'
+
+// Alert user about session and break
+// function sessionEnded(breakTime: number) {
+//   const notification = new Notification('Your session has ended.', {
+//     body: `Take a ${Math.floor((breakTime / 60) % 60)} min. break now!`,
+//     icon: '/timer.png',
+//   })
+//   return notification
+// }
+
+// function sessionStarted() {
+//   const notification = new Notification('Your break is over.', {
+//     body: 'Get to work!',
+//     icon: '/timer.png',
+//   })
+//   return notification
+// }
+
+const yamete = new Howl({
+  src: ['/ding.mp3'],
+})
+
+
 function countLogic({ counter, breakTime, sessionTime }: State) {
   // If counter is running and counter has not finished
   if (counter.state && counter.value > 1) {
@@ -8,9 +32,13 @@ function countLogic({ counter, breakTime, sessionTime }: State) {
     if (counter.type === 'SESSION') {
       counter.value = breakTime
       counter.type = 'BREAK'
+      // sessionEnded(breakTime)
+      yamete.play()
     } else {
       counter.value = sessionTime
       counter.type = 'SESSION'
+      // sessionStarted()
+      yamete.play()
     }
     return counter
   } else {
