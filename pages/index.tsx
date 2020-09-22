@@ -31,11 +31,11 @@ const Home = () => {
   const { state, dispatch } = useContext(GlobalContext)
 
   // Request notification permission to alert about session
-  useEffect(() => {
-    if (Notification.permission !== 'denied') {
-      Notification.requestPermission()
-    }
-  }, [])
+  // useEffect(() => {
+  //   if (Notification.permission !== 'denied') {
+  //     Notification.requestPermission()
+  //   }
+  // }, [])
 
   useEffect(() => {
     if (state.counter.state) {
